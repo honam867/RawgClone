@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import { HashRouter } from 'react-router-dom';
+import HeaderContainer from './containers/HeaderContainer';
+import { INDEX_PATH } from './constants/urlApi';
+import { connect } from 'react-redux';
+import { initRouter } from './actions/RouterAction';
+import { useEffect } from 'react';
+const paths = [INDEX_PATH];
+function App({ initRouter }) {
+  useEffect(() => {
+    initRouter(paths);
+  }, [initRouter]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter basename="/">
+      <div className="App">
+        <HeaderContainer />
+      </div>
+    </HashRouter>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    ...state.app
+  };
+};
+
+export default connect(mapStateToProps, { initRouter })(App);
